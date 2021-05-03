@@ -1,7 +1,8 @@
 echo "********************************* Prerequisite **************************************"
+yum install vim wget -y
 con=`nmcli connection show | grep ethernet | awk '{print $1}'`
 nmcli connection modify $con connection.autoconnect yes
-hostnamectl set-hostname k8s-master
+hostnamectl set-hostname master
 vim -c "g/swap/d" -c "wq" /etc/fstab
 vim -c "7s/enforcing/permissive/g" -c "wq" /etc/sysconfig/selinux
 swapoff -a
@@ -9,9 +10,10 @@ setenforce 0
 systemctl stop firewalld
 systemctl disable firewalld
 
+
 echo "********************************* Docker Installation **************************************"
 wget -O /etc/yum.repos.d/docker.repo https://download.docker.com/linux/centos/docker-ce.repo
-yum install docker -y
+yum install docker-ce -y
 systemctl start docker
 systemctl enable docker
 

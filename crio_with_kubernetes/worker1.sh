@@ -1,7 +1,8 @@
 echo "********************************* Prerequisite **************************************"
+yum install wget vim -y
 con=`nmcli connection show | grep ethernet | awk '{print $1}'`
 nmcli connection modify $con connection.autoconnect yes
-hostnamectl set-hostname k8s-worker1
+hostnamectl set-hostname worker1
 vim -c "g/swap/d" -c "wq" /etc/fstab
 vim -c "7s/enforcing/permissive/g" -c "wq" /etc/sysconfig/selinux
 swapoff -a
