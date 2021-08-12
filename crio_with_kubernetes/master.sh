@@ -44,7 +44,7 @@ systemctl enable kubelet
 echo "********************************* CRI-O INSTALLATION **************************************"
 curl -L -o /etc/yum.repos.d/libcontainers-stable.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo
 
-curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.20/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.20.repo
+curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.22/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.22.repo
 
 yum install cri-o -y
 systemctl start crio
