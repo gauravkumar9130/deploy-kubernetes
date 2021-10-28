@@ -59,7 +59,7 @@ systemctl restart kubelet
 kubeadm init --pod-network-cidr=10.244.0.0/16
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
-wget -O /root/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
+wget -O /root/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml --no-check-certificate
 vim -c "%s/docker.io/quay.io/g" -c "wq" /root/calico.yaml
 kubectl apply -f /root/calico.yaml
 
