@@ -37,6 +37,7 @@ EOF
 yum clean all -y
 yum repolist all -y
 yum install kubectl kubelet kubeadm -y
+systemctl daemon-reload
 systemctl start kubelet
 systemctl enable kubelet
 
@@ -49,7 +50,4 @@ curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories
 yum install cri-o -y
 systemctl start crio
 systemctl enable crio
-cat > /etc/sysconfig/kubelet <<EOF
-KUBELET_EXTRA_ARGS="--cgroup-driver=systemd"
-EOF
-systemctl restart kubelet
+
