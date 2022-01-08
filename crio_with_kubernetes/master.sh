@@ -37,6 +37,7 @@ EOF
 yum clean all -y
 yum repolist all -y
 yum install kubectl kubelet kubeadm -y
+systemctl daemon-reload
 systemctl start kubelet
 systemctl enable kubelet
 
@@ -52,10 +53,7 @@ systemctl enable crio
 
 
 echo "********************************* Initialize Kubernetes **************************************"
-cat > /etc/sysconfig/kubelet <<EOF
-KUBELET_EXTRA_ARGS="--cgroup-driver=systemd"
-EOF
-systemctl restart kubelet
+
 kubeadm init --pod-network-cidr=10.244.0.0/16
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
