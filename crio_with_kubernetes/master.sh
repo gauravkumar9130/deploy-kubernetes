@@ -29,8 +29,8 @@ cat > /etc/yum.repos.d/kubernetes.repo <<EOF
 [kubernetes]
 name=kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-gpgcheck=1
-repo_gpgcheck=1
+gpgcheck=0
+repo_gpgcheck=0
 enabled=1
 gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
