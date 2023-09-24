@@ -28,10 +28,11 @@ echo "********************************* Configure Kubernetes *******************
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
 enabled=1
-gpgcheck=0
-gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 yum clean all -y
 yum repolist all -y
@@ -44,7 +45,7 @@ systemctl enable kubelet
 echo "********************************* CRI-O INSTALLATION **************************************"
 curl -L -o /etc/yum.repos.d/libcontainers-stable.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo
 
-curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.21/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.21.repo
+curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.28/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.28.repo
 
 yum install cri-o -y
 systemctl start crio
