@@ -1,7 +1,4 @@
 echo "********************************* Prerequisite **************************************"
-yum install vim wget -y
-con=`nmcli connection show | grep ethernet | awk '{print $1}'`
-nmcli connection modify $con connection.autoconnect yes
 hostnamectl set-hostname master
 vim -c "g/swap/d" -c "wq" /etc/fstab
 vim -c "7s/enforcing/permissive/g" -c "wq" /etc/sysconfig/selinux
