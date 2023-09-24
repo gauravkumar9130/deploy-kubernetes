@@ -1,7 +1,4 @@
 echo "********************************* Prerequisite **************************************"
-yum install vim wget -y
-con=`nmcli connection show | grep ethernet | awk '{print $1}'`
-nmcli connection modify $con connection.autoconnect yes
 hostnamectl set-hostname worker2
 vim -c "g/swap/d" -c "wq" /etc/fstab
 vim -c "7s/enforcing/permissive/g" -c "wq" /etc/sysconfig/selinux
@@ -28,15 +25,15 @@ echo "********************************* Configure Kubernetes *******************
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
 enabled=1
-gpgcheck=0
-gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
 EOF
-
 yum clean all -y
 yum repolist all -y
 yum install kubectl kubelet kubeadm -y
+systemctl daemon-reload
 systemctl start kubelet
 systemctl enable kubelet
 
@@ -44,12 +41,8 @@ systemctl enable kubelet
 echo "********************************* CRI-O INSTALLATION **************************************"
 curl -L -o /etc/yum.repos.d/libcontainers-stable.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo
 
-curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.21/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.21.repo
+curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.28/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.28.repo
 
 yum install cri-o -y
 systemctl start crio
 systemctl enable crio
-cat > /etc/sysconfig/kubelet <<EOF
-KUBELET_EXTRA_ARGS="--cgroup-driver=systemd"
-EOF
-systemctl restart kubelet
