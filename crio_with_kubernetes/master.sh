@@ -63,3 +63,4 @@ kubectl apply -f calico.yaml
 
 
 echo "COPY JOIN COMMAND AND PASTE ON WORKER NODES"
+echo "If any error comes then go to network settings and change DNS to 8.8.8.8"
