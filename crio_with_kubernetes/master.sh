@@ -22,13 +22,13 @@ EOF
 sudo sysctl --system
 
 echo "********************************* Configure Kubernetes **************************************"
-cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/1.34/rpm/
 enabled=1
 gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+gpgkey=https://pkgs.k8s.io/core:/stable:/1.34/rpm/repodata/repomd.xml.key
 EOF
 yum clean all -y
 yum repolist all -y
@@ -39,10 +39,14 @@ systemctl enable kubelet
 
 
 echo "********************************* CRI-O INSTALLATION **************************************"
-curl -L -o /etc/yum.repos.d/libcontainers-stable.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo
-
-curl -L -o /etc/yum.repos.d/crio.repo https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:1.28/CentOS_7/devel:kubic:libcontainers:stable:cri-o:1.28.repo
-
+cat <<EOF | tee /etc/yum.repos.d/cri-o.repo
+[cri-o]
+name=CRI-O
+baseurl=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/1.34/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/1.34/rpm/repodata/repomd.xml.key
+EOF
 yum install cri-o -y
 systemctl start crio
 systemctl enable crio
@@ -53,7 +57,7 @@ echo "********************************* Initialize Kubernetes ******************
 kubeadm init --pod-network-cidr=10.244.0.0/16
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
-wget -O calico.yaml https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
+wget -O calico.yaml https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/calico.yaml
 vim -c "%s/docker.io/quay.io/g" -c "wq" /root/calico.yaml
 kubectl apply -f /root/calico.yaml
 
