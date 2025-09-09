@@ -58,8 +58,8 @@ kubeadm init --pod-network-cidr=10.244.0.0/16
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
 wget -O calico.yaml https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/calico.yaml
-vim -c "%s/docker.io/quay.io/g" -c "wq" /root/calico.yaml
-kubectl apply -f /root/calico.yaml
+vim -c "%s/docker.io/quay.io/g" -c "wq" calico.yaml
+kubectl apply -f calico.yaml
 
 
 echo "COPY JOIN COMMAND AND PASTE ON WORKER NODES"
